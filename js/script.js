@@ -22,9 +22,9 @@ let min = nowDate.getMinutes();
 let hours = nowDate.getHours();
 
 function welcome(){
-    for(let i = 1; i < arrGreeting.length; i++){
-        return hours>=6*i&&hours<6*i+6 ? i : 0
-    }
+    return  hours>=6&&hours<12 ? 1 :
+            hours>=12&&hours<18 ? 2 :
+            hours>=18&&hours<24 ? 3 : 0
 }
 greeting.innerHTML = arrGreeting[welcome()];
 addName.value = localStorage.getItem('yourName')
@@ -32,4 +32,30 @@ addName.addEventListener('input', ()=>{
     localStorage.clear();
     localStorage.setItem('yourName', addName.value);
 })
-console.log();
+
+// Add background image and slider
+let bgImageDay = ['night', 'morning', 'afternoon', 'evening']
+let maxCount = 20;
+let numBgImage = randomNum(1,maxCount);
+function randomNum(minCount, maxCount) {
+    return Math.floor(minCount + Math.random() * (maxCount - minCount));
+    
+}
+imageBg(numBgImage);
+const sliderNext = document.querySelector('.slide-next');
+const sliderPrev = document.querySelector('.slide-prev');
+
+sliderNext.addEventListener('click', ()=>{
+numBgImage >= maxCount ? numBgImage=1 : numBgImage++;
+imageBg(numBgImage);
+})
+
+sliderPrev.addEventListener('click', ()=>{
+    numBgImage <= 1 ? numBgImage=maxCount : numBgImage--;
+imageBg(numBgImage);
+})
+
+function imageBg(count) {
+    count < 10 ? count = '0'+count : count;
+    document.body.style.backgroundImage = `url('https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${bgImageDay[welcome()]}/${count}.jpg')`;
+}
