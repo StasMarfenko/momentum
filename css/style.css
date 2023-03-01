@@ -285,3 +285,12 @@ body {
     padding: 5px;
   }
 }
+@media (max-width: 520px) {
+  .greeting {
+    font-size: 38px;
+  }
+  .name, .greeting {
+    max-width: 100%;
+   text-align: center;
+  }
+}
