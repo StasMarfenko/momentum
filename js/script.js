@@ -28,7 +28,7 @@ function welcome(){
 greeting.innerHTML = arrGreeting[welcome()];
 addName.value = localStorage.getItem('yourName')
 addName.addEventListener('input', ()=>{
-    localStorage.clear();
+    localStorage.removeItem('yourName');
     localStorage.setItem('yourName', addName.value);
 })
 
@@ -92,20 +92,20 @@ const error = document.querySelector('.weather-error');
 const humidity = document.querySelector('.humidity');
 const wind = document.querySelector('.wind');
 city.addEventListener('blur', ()=>{
-    localStorage.clear();
+    localStorage.removeItem('cityKey');
     localStorage.setItem('cityKey', city.value);
 
     Weather(city.value);
 })
 city.addEventListener('keyup', (event)=>{
     if (event.keyCode === 13){
-        localStorage.clear();
+        localStorage.removeItem('cityKey');
         localStorage.setItem('cityKey', city.value);
         Weather(city.value)
     }
 })
 
-if(localStorage.length>0 && localStorage.cityKey != ''){
+if(localStorage.cityKey != '' && localStorage.cityKey != undefined){
     city.value = localStorage.getItem('cityKey');
     Weather(localStorage.getItem('cityKey'));
 } else {
@@ -117,10 +117,10 @@ if(localStorage.length>0 && localStorage.cityKey != ''){
     const link = `https://api.openweathermap.org/data/2.5/weather?q=${cityGet}&lang=ru&appid=4ebdb346a0d3b4d400d1988d96a95766&units=metric`;
     const resultWeather = await fetch(link);
     const dateWeather = await resultWeather.json();
-    if(dateWeather.cod === '404'){
-        localStorage.clear();
+    if(dateWeather.cod === '404' || dateWeather.cod === '400'){
+        localStorage.removeItem('cityKey');
         temperature.innerHTML='';
-        wind.innerHTML.innerHTML='';
+        wind.innerHTML='';
         humidity.innerHTML='';
         iconWeather.className = 'weather-icon owf';
         error.innerHTML = 'Такого города не найдено!'
